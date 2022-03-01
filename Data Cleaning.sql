@@ -95,3 +95,45 @@ FROM NashvileHousing a JOIN NashvileHousing b
 	ON a.ParcelID = b.ParcelID
 	AND a.[UniqueID ] <> b.[UniqueID ]
 -- The updating process was done correctly
+
+-- Discovering Address Column after filling missing values
+
+SELECT PropertyAddress
+FROM NashvileHousing
+-- It is divided into Adress, city, state
+
+SELECT SUBSTRING(PropertyAddress, 1, CHARINDEX(',', PropertyAddress) - 1) AS Address
+FROM NashvileHousing
+
+SELECT
+	PropertyAddress,
+	SUBSTRING(PropertyAddress, 1, CHARINDEX(',', PropertyAddress) - 1) AS Address,
+	SUBSTRING(PropertyAddress, CHARINDEX(',', PropertyAddress) + 1, LEN(PropertyAddress)) AS Address2
+FROM NashvileHousing
+
+ALTER TABLE NashvileHousing
+ADD PropertyAdressSplit Nvarchar(255)
+
+UPDATE NashvileHousing
+SET PropertyAdressSplit = SUBSTRING(PropertyAddress, 1, CHARINDEX(',', PropertyAddress) - 1)
+
+
+ALTER TABLE NashvileHousing
+ADD PropertyCity Nvarchar(255)
+
+UPDATE NashvileHousing
+SET PropertyCity = SUBSTRING(PropertyAddress, CHARINDEX(',', PropertyAddress) + 1, LEN(PropertyAddress))
+
+SELECT *
+FROM NashvileHousing
+
+-- Splitting owner address
+SELECT OwnerAddress
+FROM NashvileHousing
+
+SELECT 
+	OwnerAddress,
+	PARSENAME(REPLACE(OwnerAddress, ',', '.'), 1) AS State,
+	PARSENAME(REPLACE(OwnerAddress, ',', '.'), 2) AS City,
+	PARSENAME(REPLACE(OwnerAddress, ',', '.'), 3) AS Address
+FROM NashvileHousing
