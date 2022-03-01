@@ -169,3 +169,36 @@ SELECT
 FROM NashvileHousing
 
 -- The splitting was done in correct and clean manner
+
+-- Explore data furthur
+
+
+SELECT DISTINCT SoldAsVacant
+FROM NashvileHousing
+
+SELECT DISTINCT SoldAsVacant, COUNT(SoldAsVacant)
+FROM NashvileHousing
+GROUP BY SoldAsVacant
+
+SELECT
+	SoldAsVacant,
+	CASE 
+		WHEN SoldAsVacant = 'N' THEN 'No'
+		WHEN SoldAsVacant = 'Y' THEN 'Yes'
+		ELSE SoldAsVacant
+	END
+FROM NashvileHousing
+
+UPDATE NashvileHousing
+SET SoldAsVacant = 	CASE 
+		WHEN SoldAsVacant = 'N' THEN 'No'
+		WHEN SoldAsVacant = 'Y' THEN 'Yes'
+		ELSE SoldAsVacant
+	END
+
+SELECT DISTINCT SoldAsVacant, COUNT(SoldAsVacant)
+FROM NashvileHousing
+GROUP BY SoldAsVacant
+
+-- Comparing older values with newer ones, the SoldAsVacant column is fixed
+
