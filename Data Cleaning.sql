@@ -137,3 +137,35 @@ SELECT
 	PARSENAME(REPLACE(OwnerAddress, ',', '.'), 2) AS City,
 	PARSENAME(REPLACE(OwnerAddress, ',', '.'), 3) AS Address
 FROM NashvileHousing
+
+ALTER TABLE NashvileHousing
+ADD OwnerSplitAdress Nvarchar(255)
+
+UPDATE NashvileHousing
+SET OwnerSplitAdress = PARSENAME(REPLACE(OwnerAddress, ',', '.'), 3)
+
+ALTER TABLE NashvileHousing
+ADD OwnerCity Nvarchar(255)
+
+UPDATE NashvileHousing
+SET OwnerCity = PARSENAME(REPLACE(OwnerAddress, ',', '.'), 2)
+
+ALTER TABLE NashvileHousing
+ADD OwnerState Nvarchar(255)
+
+UPDATE NashvileHousing
+SET OwnerState = PARSENAME(REPLACE(OwnerAddress, ',', '.'), 1)
+
+-- Ensuring all previous done properly
+
+SELECT 
+	PropertyAddress,
+	PropertyAdressSplit,
+	PropertyCity,
+	OwnerAddress,
+	OwnerSplitAdress,
+	OwnerCity,
+	OwnerState
+FROM NashvileHousing
+
+-- The splitting was done in correct and clean manner
